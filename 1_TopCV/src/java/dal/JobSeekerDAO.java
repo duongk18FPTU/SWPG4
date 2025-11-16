@@ -402,7 +402,7 @@ public class JobSeekerDAO extends DBContext {
     }
 
     /**
-     * 将账号标记为 Google 登录账号（不再存常规密码）。
+     * Đánh dấu tài khoản là tài khoản đăng nhập Google (không lưu mật khẩu thông thường).
      */
     public boolean setAsGoogleAccount(int jobSeekerId) {
         if (c == null) {
