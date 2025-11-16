@@ -237,7 +237,7 @@ public class JobPostingServlet extends HttpServlet {
             // Quy tắc mới: NHẤT ĐỊNH dùng gói ĐĂNG_TUYỂN mua GẦN NHẤT
             // - Nếu gói gần nhất đã hết hạn → hiển thị cảnh báo và vô hiệu hoá nổi bật & nút "Đăng tin"
             // - Nếu gói gần nhất còn hạn nhưng hết lượt → hiển thị cảnh báo và vô hiệu hoá nổi bật & nút "Đăng tin"
-            // - Nếu gói gần nhất hợp lệ且还剩 lượt → 允许 nổi bật phụ thuộc vào features của gói
+            // - Nếu gói gần nhất hợp lệ và còn lượt → cho phép nổi bật phụ thuộc vào features của gói
             boolean allowFeatured = false; // Cho phép bật checkbox "Đăng tin nổi bật" hay không
             Integer selectedRecruiterPackageID = null;
             Integer selectedPackageDuration = null;

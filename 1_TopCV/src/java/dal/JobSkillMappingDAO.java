@@ -21,7 +21,7 @@ public class JobSkillMappingDAO extends DBContext {
             return true; // Đã tồn tại, không cần insert lại
         }
         
-        // Thử cả hai表名（JobSkillMapping 和 JobSkillMappings）
+        // Thử cả hai tên bảng (JobSkillMapping và JobSkillMappings)
         String[] tableNames = {"JobSkillMapping", "JobSkillMappings"};
         
         for (String tableName : tableNames) {
@@ -42,7 +42,7 @@ public class JobSkillMappingDAO extends DBContext {
                     System.out.println("DEBUG JobSkillMappingDAO: WARNING - No rows affected for " + tableName);
                 }
             } catch (SQLException e) {
-                // Nếu是表名错误，继续尝试下一个表名
+                // Nếu là lỗi tên bảng, tiếp tục thử tên bảng tiếp theo
                 if (e.getMessage() != null && (e.getMessage().contains("Invalid object name") || e.getMessage().contains("does not exist"))) {
                     System.out.println("DEBUG JobSkillMappingDAO: Table " + tableName + " does not exist, trying next...");
                     continue;
@@ -54,7 +54,7 @@ public class JobSkillMappingDAO extends DBContext {
                 System.out.println("DEBUG JobSkillMappingDAO: Message: " + e.getMessage());
                 System.out.println("DEBUG JobSkillMappingDAO: JobID: " + jobID + ", SkillID: " + skillID);
                 
-                // 如果是外键约束错误或其他非表名错误，直接返回false
+                // Nếu là lỗi ràng buộc khóa ngoại hoặc lỗi khác không phải tên bảng, trả về false
                 if (e.getErrorCode() != 208) { // 208 = Invalid object name
                     e.printStackTrace();
                     return false;
@@ -71,7 +71,7 @@ public class JobSkillMappingDAO extends DBContext {
     
     // Kiểm tra mapping đã tồn tại chưa
     public boolean mappingExists(int jobID, int skillID) {
-        // Thử cả hai表名
+        // Thử cả hai tên bảng
         String[] tableNames = {"JobSkillMapping", "JobSkillMappings"};
         
         for (String tableName : tableNames) {
@@ -90,7 +90,7 @@ public class JobSkillMappingDAO extends DBContext {
                     }
                 }
             } catch (SQLException e) {
-                // Nếu是表名错误，继续尝试下一个表名
+                // Nếu là lỗi tên bảng, tiếp tục thử tên bảng tiếp theo
                 if (e.getMessage() != null && (e.getMessage().contains("Invalid object name") || e.getMessage().contains("does not exist"))) {
                     continue;
                 }
@@ -103,7 +103,7 @@ public class JobSkillMappingDAO extends DBContext {
     // Lấy tất cả skills của một job
     public List<Integer> getSkillIDsByJobID(int jobID) {
         List<Integer> skillIDs = new ArrayList<>();
-        // Thử cả hai表名
+        // Thử cả hai tên bảng
         String[] tableNames = {"JobSkillMapping", "JobSkillMappings"};
         
         for (String tableName : tableNames) {
@@ -116,10 +116,10 @@ public class JobSkillMappingDAO extends DBContext {
                 while (rs.next()) {
                     skillIDs.add(rs.getInt("SkillID"));
                 }
-                // Nếu成功执行（没有异常），返回结果（即使为空）
+                // Nếu thực thi thành công (không có ngoại lệ), trả về kết quả (kể cả rỗng)
                 return skillIDs;
             } catch (SQLException e) {
-                // Nếu是表名错误，继续尝试下一个表名
+                // Nếu là lỗi tên bảng, tiếp tục thử tên bảng tiếp theo
                 if (e.getMessage() != null && (e.getMessage().contains("Invalid object name") || e.getMessage().contains("does not exist"))) {
                     continue;
                 }
@@ -132,7 +132,7 @@ public class JobSkillMappingDAO extends DBContext {
     
     // Xóa mapping theo JobID
     public boolean deleteMappingsByJobID(int jobID) {
-        // Thử cả hai表名
+        // Thử cả hai tên bảng
         String[] tableNames = {"JobSkillMapping", "JobSkillMappings"};
         
         for (String tableName : tableNames) {
@@ -142,9 +142,9 @@ public class JobSkillMappingDAO extends DBContext {
                 ps.setInt(1, jobID);
                 int rowsAffected = ps.executeUpdate();
                 System.out.println("DEBUG JobSkillMappingDAO: Deleted " + rowsAffected + " mappings from " + tableName + " for JobID: " + jobID);
-                return true; // 成功或表不存在都返回true（因为目标都是删除）
+                return true; // Thành công hoặc bảng không tồn tại đều trả về true (vì mục tiêu đều là xóa)
             } catch (SQLException e) {
-                // Nếu是表名错误，继续尝试下一个表名
+                // Nếu là lỗi tên bảng, tiếp tục thử tên bảng tiếp theo
                 if (e.getMessage() != null && (e.getMessage().contains("Invalid object name") || e.getMessage().contains("does not exist"))) {
                     continue;
                 }
@@ -157,7 +157,7 @@ public class JobSkillMappingDAO extends DBContext {
     
     // Xóa một mapping cụ thể
     public boolean deleteMapping(int jobID, int skillID) {
-        // Thử cả hai表名
+        // Thử cả hai tên bảng
         String[] tableNames = {"JobSkillMapping", "JobSkillMappings"};
         
         for (String tableName : tableNames) {
@@ -168,7 +168,7 @@ public class JobSkillMappingDAO extends DBContext {
                 ps.setInt(2, skillID);
                 return ps.executeUpdate() > 0;
             } catch (SQLException e) {
-                // Nếu是表名错误，继续尝试下一个表名
+                // Nếu là lỗi tên bảng, tiếp tục thử tên bảng tiếp theo
                 if (e.getMessage() != null && (e.getMessage().contains("Invalid object name") || e.getMessage().contains("does not exist"))) {
                     continue;
                 }
