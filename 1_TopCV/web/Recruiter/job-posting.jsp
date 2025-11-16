@@ -656,7 +656,7 @@
                         <label>Logo công ty</label>
                         <% if (recruiter.getCompanyLogoURL() != null && !recruiter.getCompanyLogoURL().isEmpty()) { %>
                             <div style="margin-bottom: 10px;">
-                                <img src="<%= recruiter.getCompanyLogoURL() %>" alt="Company Logo" style="max-width: 200px; max-height: 200px; border: 1px solid #ddd; padding: 5px; border-radius: 5px;">
+                                <img src="<%= request.getContextPath() + recruiter.getCompanyLogoURL() %>" alt="Company Logo" style="max-width: 200px; max-height: 200px; border: 1px solid #ddd; padding: 5px; border-radius: 5px;" onerror="this.onerror=null; this.src='data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAwIiBoZWlnaHQ9IjIwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMjAwIiBoZWlnaHQ9IjIwMCIgZmlsbD0iI2Y1ZjVmNSIvPjx0ZXh0IHg9IjUwJSIgeT0iNTAlIiBmb250LWZhbWlseT0iQXJpYWwiIGZvbnQtc2l6ZT0iMTQiIGZpbGw9IiM5OTkiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGR5PSIuM2VtIj5Lb2h0aCBjw7MgbG9nbyBjb25nIHR5PC90ZXh0Pjwvc3ZnPg==';">
                             </div>
                         <% } else { %>
                             <div style="padding: 10px; background-color: #f5f5f5; border-radius: 5px; color: #999;">
@@ -669,7 +669,7 @@
                         <label>Hình ảnh công ty</label>
                         <% if (recruiter.getImg() != null && !recruiter.getImg().isEmpty()) { %>
                             <div style="margin-bottom: 10px;">
-                                <img src="<%= recruiter.getImg() %>" alt="Company Image" style="max-width: 300px; max-height: 300px; border: 1px solid #ddd; padding: 5px; border-radius: 5px;">
+                                <img src="<%= request.getContextPath() + recruiter.getImg() %>" alt="Company Image" style="max-width: 300px; max-height: 300px; border: 1px solid #ddd; padding: 5px; border-radius: 5px;" onerror="this.onerror=null; this.src='data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMzAwIiBoZWlnaHQ9IjMwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMzAwIiBoZWlnaHQ9IjMwMCIgZmlsbD0iI2Y1ZjVmNSIvPjx0ZXh0IHg9IjUwJSIgeT0iNTAlIiBmb250LWZhbWlseT0iQXJpYWwiIGZvbnQtc2l6ZT0iMTQiIGZpbGw9IiM5OTkiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGR5PSIuM2VtIj5Lb2h0aCBjw7MgacOqbmgg4bqldCBjb25nIHR5PC90ZXh0Pjwvc3ZnPg==';">
                             </div>
                         <% } else { %>
                             <div style="padding: 10px; background-color: #f5f5f5; border-radius: 5px; color: #999;">

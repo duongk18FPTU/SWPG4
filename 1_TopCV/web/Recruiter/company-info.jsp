@@ -24,6 +24,8 @@
     if (recruiter != null) {
         System.out.println("Recruiter name: " + recruiter.getContactPerson());
         System.out.println("Recruiter company: " + recruiter.getCompanyName());
+        System.out.println("Recruiter.getImg(): " + recruiter.getImg());
+        System.out.println("Recruiter.getCompanyLogoURL(): " + recruiter.getCompanyLogoURL());
     }
     System.out.println("=== End Company Info Page Debug ===");
 %>
@@ -49,12 +51,12 @@
                         <span>RecruitPro</span>
                     </div>
                     <ul class="nav-menu">
-                        <li><a href="index.html">Dashboard</a></li>
-                        <li><a href="#">Việc Làm</a></li>
+                        <li><a href="${pageContext.request.contextPath}/Recruiter/index.jsp">Dashboard</a></li>
+                        <li><a href="${pageContext.request.contextPath}/listpostingjobs">Việc Làm</a></li>
                         <li class="dropdown">
                             <a href="#">Ứng viên <i class="fas fa-chevron-down"></i></a>
                             <div class="dropdown-content">
-                                <a href="${pageContext.request.contextPath}/Recruiter/candidate-management.jsp">Quản lý theo việc đăng tuyển</a>
+                                <a href="${pageContext.request.contextPath}/candidate-management">Quản lý theo việc đăng tuyển</a>
                                 <a href="${pageContext.request.contextPath}/Recruiter/candidate-folder.html">Quản lý theo thư mục và thẻ</a>
                             </div>
                         </li>
@@ -65,9 +67,15 @@
                                 <a href="#">Tài liệu hướng dẫn</a>
                             </div>
                         </li>
-                        <li><a href="#">Đơn hàng</a></li>
+                        <li class="dropdown">
+                            <a href="#">Đơn hàng <i class="fas fa-chevron-down"></i></a>
+                            <div class="dropdown-content">
+                                <a href="#">Quản lý đơn hàng</a>
+                                <a href="${pageContext.request.contextPath}/recruiter/purchase-history">Lịch sử mua</a>
+                            </div>
+                        </li>
                         <li><a href="#">Báo cáo</a></li>
-                        <li><a href="#" class="active">Công ty</a></li>
+                        <li><a href="${pageContext.request.contextPath}/Recruiter/company-info.jsp" class="active">Công ty</a></li>
                     </ul>
                 </div>
                 <div class="nav-right">
@@ -77,12 +85,12 @@
                                 Đăng Tuyển Dụng <i class="fas fa-chevron-down"></i>
                             </button>
                             <div class="dropdown-content">
-                                <a href="job-posting.html">Tạo tin tuyển dụng mới</a>
-                                <a href="job-management.html">Quản lý tin đã đăng</a>
+                                <a href="${pageContext.request.contextPath}/jobposting">Tạo tin tuyển dụng mới</a>
+                                <a href="${pageContext.request.contextPath}/listpostingjobs">Quản lý tin đã đăng</a>
                             </div>
                         </div>
-                        <button class="btn btn-blue">Tìm Ứng Viên</button>
-                        <button class="btn btn-white">Mua</button>
+                        <button class="btn btn-blue" onclick="window.location.href='${pageContext.request.contextPath}/candidate-search'">Tìm Ứng Viên</button>
+                        <button class="btn btn-white" onclick="window.location.href='${pageContext.request.contextPath}/Recruiter/job-package.jsp'">Mua</button>
                     </div>
                     <div class="nav-icons">
                         <i class="fas fa-shopping-cart"></i>
@@ -113,7 +121,7 @@
                                         <i class="fas fa-cog"></i>
                                         <span>Quản lý tài khoản</span>
                                     </a>
-                                    <a href="#" class="menu-item highlighted">
+                                    <a href="${pageContext.request.contextPath}/Recruiter/company-info.jsp" class="menu-item highlighted">
                                         <i class="fas fa-building"></i>
                                         <span>Thông tin công ty</span>
                                     </a>
@@ -923,20 +931,36 @@
                                                     // Remove existing image from database
                                                     window.removeExistingImage = function (button, imagePath) {
                                                         const removedImagesField = document.getElementById('removedImages');
-                                                        const currentRemoved = removedImagesField.value;
+                                                        let currentRemoved = removedImagesField.value ? removedImagesField.value.trim() : '';
+                                                        
+                                                        // Debug log
+                                                        console.log('Removing image:', imagePath);
+                                                        console.log('Current removedImages value:', currentRemoved);
+                                                        
+                                                        // Normalize: remove empty values and trailing commas
+                                                        if (currentRemoved) {
+                                                            // Split, filter empty, and rejoin
+                                                            const parts = currentRemoved.split(',').filter(p => p.trim() !== '');
+                                                            currentRemoved = parts.join(',');
+                                                        }
+                                                        
+                                                        // Add new image path
+                                                        if (currentRemoved && currentRemoved.length > 0) {
+                                                            removedImagesField.value = currentRemoved + ',' + imagePath;
+                                                        } else {
+                                                            removedImagesField.value = imagePath;
+                                                        }
+                                                        
+                                                        console.log('Updated removedImages value:', removedImagesField.value);
 
-                                                        removedImagesField.value = currentRemoved
-                                                                ? `${currentRemoved},${imagePath}`
-                                                                                    : imagePath;
-
-                                                                            // Add fade out animation
-                                                                            const previewDiv = button.parentElement;
-                                                                            previewDiv.style.transition = 'opacity 0.3s ease';
-                                                                            previewDiv.style.opacity = '0';
-                                                                            setTimeout(() => {
-                                                                                previewDiv.remove();
-                                                                            }, 300);
-                                                                        };
+                                                        // Add fade out animation
+                                                        const previewDiv = button.parentElement;
+                                                        previewDiv.style.transition = 'opacity 0.3s ease';
+                                                        previewDiv.style.opacity = '0';
+                                                        setTimeout(() => {
+                                                            previewDiv.remove();
+                                                        }, 300);
+                                                    };
 
                                                                         // ========================================
                                                                         // TAX CODE VALIDATION

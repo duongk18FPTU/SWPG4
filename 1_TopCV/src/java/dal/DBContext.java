@@ -10,7 +10,7 @@ public class DBContext {
 
     public DBContext() {
         try {
-            String url = "jdbc:sqlserver://localhost:1433;databaseName=topcvplus2;encrypt=true;trustServerCertificate=true";
+            String url = "jdbc:sqlserver://localhost:1433;databaseName=topcvplus3;encrypt=true;trustServerCertificate=true";
             String username = "sa";
             String pass = "min257358";
             Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
