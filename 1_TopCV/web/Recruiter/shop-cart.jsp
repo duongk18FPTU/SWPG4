@@ -838,13 +838,13 @@
                         <span>RecruitPro</span>
                     </div>
                     <ul class="nav-menu">
-                        <li><a href="index.html" class="active">Dashboard</a></li>
-                        <li><a href="#">Việc Làm</a></li>
+                        <li><a href="${pageContext.request.contextPath}/Recruiter/index.jsp">Dashboard</a></li>
+                        <li><a href="${pageContext.request.contextPath}/listpostingjobs">Việc Làm</a></li>
                         <li class="dropdown">
-                            <a href="#" class="active">Ứng viên <i class="fas fa-chevron-down"></i></a>
+                            <a href="#">Ứng viên <i class="fas fa-chevron-down"></i></a>
                             <div class="dropdown-content">
-                                <a href="candidate-management.jsp">Quản lý theo việc đăng tuyển</a>
-                                <a href="candidate-folder.html" class="highlighted">Quản lý theo thư mục và thẻ</a>
+                                <a href="${pageContext.request.contextPath}/candidate-management">Quản lý theo việc đăng tuyển</a>
+                                <a href="${pageContext.request.contextPath}/Recruiter/candidate-folder.html">Quản lý theo thư mục và thẻ</a>
                             </div>
                         </li>
                         <li class="dropdown">
@@ -858,11 +858,11 @@
                             <a href="#">Đơn hàng <i class="fas fa-chevron-down"></i></a>
                             <div class="dropdown-content">
                                 <a href="#">Quản lý đơn hàng</a>
-                                <a href="#">Lịch sử mua</a>
+                                <a href="${pageContext.request.contextPath}/recruiter/purchase-history">Lịch sử mua</a>
                             </div>
                         </li>
                         <li><a href="#">Báo cáo</a></li>
-                        <li><a href="#">Công ty</a></li>
+                        <li><a href="${pageContext.request.contextPath}/Recruiter/company-info.jsp">Công ty</a></li>
                     </ul>
                 </div>
                 <div class="nav-right">
@@ -872,12 +872,12 @@
                                 Đăng Tuyển Dụng <i class="fas fa-chevron-down"></i>
                             </button>
                             <div class="dropdown-content">
-                                <a href="job-posting.html">Tạo tin tuyển dụng mới</a>
-                                <a href="job-management.html">Quản lý tin đã đăng</a>
+                                <a href="${pageContext.request.contextPath}/jobposting">Tạo tin tuyển dụng mới</a>
+                                <a href="${pageContext.request.contextPath}/listpostingjobs">Quản lý tin đã đăng</a>
                             </div>
                         </div>
-                        <button class="btn btn-blue" onclick="window.location.href = 'candidate-profile.html'">Tìm Ứng Viên</button>
-                        <button class="btn btn-white">Mua</button>
+                        <button class="btn btn-blue" onclick="window.location.href='${pageContext.request.contextPath}/candidate-search'">Tìm Ứng Viên</button>
+                        <button class="btn btn-white" onclick="window.location.href='${pageContext.request.contextPath}/Recruiter/job-package.jsp'">Mua</button>
                     </div>
                     <div class="nav-icons">
                         <i class="fas fa-star"></i>
@@ -909,7 +909,7 @@
                                         <i class="fas fa-cog"></i>
                                         <span>Quản lý tài khoản</span>
                                     </a>
-                                    <a href="#" class="menu-item highlighted">
+                                    <a href="${pageContext.request.contextPath}/Recruiter/company-info.jsp" class="menu-item highlighted">
                                         <i class="fas fa-building"></i>
                                         <span>Thông tin công ty</span>
                                     </a>
@@ -944,7 +944,7 @@
                                 </div>
 
                                 <div class="menu-footer">
-                                    <a href="#" class="logout-item">
+                                    <a href="${pageContext.request.contextPath}/LogoutServlet" class="logout-item">
                                         <i class="fas fa-sign-out-alt"></i>
                                         <span>Thoát</span>
                                     </a>
