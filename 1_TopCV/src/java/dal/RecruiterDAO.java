@@ -695,8 +695,17 @@ public class RecruiterDAO extends DBContext {
             ps.setString(7, companyDescription);
             ps.setString(8, companyVideoURL);
             ps.setString(9, website);
-            ps.setString(10, logoPath);
-            ps.setString(11, companyImagesPath);
+            // Handle null/empty for logo and images
+            if (logoPath != null && logoPath.trim().isEmpty()) {
+                ps.setNull(10, java.sql.Types.VARCHAR);
+            } else {
+                ps.setString(10, logoPath);
+            }
+            if (companyImagesPath != null && companyImagesPath.trim().isEmpty()) {
+                ps.setNull(11, java.sql.Types.VARCHAR);
+            } else {
+                ps.setString(11, companyImagesPath);
+            }
             ps.setString(12, taxCode);
             ps.setString(13, registrationCert);
             ps.setInt(14, recruiterId);

@@ -53,6 +53,16 @@ public class CompanyInfoServlet extends HttpServlet {
                 }
             }
             
+            // Cập nhật session với dữ liệu mới nhất từ database - đảm bảo cả hai keys đều được cập nhật
+            // Debug: Log loaded data
+            System.out.println("=== DEBUG: doGet - Loaded from database ===");
+            System.out.println("fullRecruiter.getImg(): " + fullRecruiter.getImg());
+            System.out.println("fullRecruiter.getCompanyLogoURL(): " + fullRecruiter.getCompanyLogoURL());
+            System.out.println("=== END DEBUG ===");
+            
+            session.setAttribute("user", fullRecruiter);
+            session.setAttribute("recruiter", fullRecruiter);
+            
             request.setAttribute("recruiter", fullRecruiter);
         }
         
@@ -167,28 +177,78 @@ public class CompanyInfoServlet extends HttpServlet {
                 finalLogoPath = recruiter.getCompanyLogoURL();
             }
             
+            // Normalize finalLogoPath: convert empty string to null, trim whitespace
+            if (finalLogoPath != null) {
+                finalLogoPath = finalLogoPath.trim();
+                if (finalLogoPath.isEmpty()) {
+                    finalLogoPath = null;
+                }
+            }
+            
+            // Normalize removedImages: trim and check if it has valid content
+            String normalizedRemovedImages = null;
+            if (removedImages != null && !removedImages.trim().isEmpty()) {
+                // Check if removedImages contains any non-empty values after splitting
+                String[] removedArray = removedImages.split(",");
+                StringBuilder validRemoved = new StringBuilder();
+                for (String removed : removedArray) {
+                    String trimmed = removed.trim();
+                    if (!trimmed.isEmpty()) {
+                        if (validRemoved.length() > 0) {
+                            validRemoved.append(",");
+                        }
+                        validRemoved.append(trimmed);
+                    }
+                }
+                if (validRemoved.length() > 0) {
+                    normalizedRemovedImages = validRemoved.toString();
+                }
+            }
+            
             // Handle company images - merge existing and new images
             if (companyImagesPath != null) {
                 // If new images uploaded, merge with existing images
                 String existingImages = recruiter.getImg();
                 if (existingImages != null && !existingImages.isEmpty()) {
                     // Remove images that were marked for deletion
-                    if (removedImages != null && !removedImages.isEmpty()) {
-                        existingImages = removeImagesFromExisting(existingImages, removedImages);
+                    if (normalizedRemovedImages != null) {
+                        existingImages = removeImagesFromExisting(existingImages, normalizedRemovedImages);
                     }
                     // Merge existing and new images
-                    finalImagesPath = existingImages + "," + companyImagesPath;
+                    if (existingImages != null && !existingImages.isEmpty()) {
+                        finalImagesPath = existingImages + "," + companyImagesPath;
+                    } else {
+                        finalImagesPath = companyImagesPath;
+                    }
                 } else {
                     // No existing images, use only new images
                     finalImagesPath = companyImagesPath;
                 }
-            } else if (removedImages != null && !removedImages.isEmpty()) {
+            } else if (normalizedRemovedImages != null) {
                 // Only removal, no new uploads
-                finalImagesPath = removeImagesFromExisting(recruiter.getImg(), removedImages);
+                finalImagesPath = removeImagesFromExisting(recruiter.getImg(), normalizedRemovedImages);
             } else {
                 // No changes to images
                 finalImagesPath = recruiter.getImg();
             }
+            
+            // Normalize finalImagesPath: convert empty string to null, trim whitespace
+            if (finalImagesPath != null) {
+                finalImagesPath = finalImagesPath.trim();
+                if (finalImagesPath.isEmpty()) {
+                    finalImagesPath = null;
+                }
+            }
+            
+            // Debug: Log image paths before saving
+            System.out.println("=== DEBUG: Before saving to database ===");
+            System.out.println("removedLogo: " + removedLogo);
+            System.out.println("removedImages (raw): " + removedImages);
+            System.out.println("normalizedRemovedImages: " + normalizedRemovedImages);
+            System.out.println("finalLogoPath: " + finalLogoPath);
+            System.out.println("finalImagesPath: " + finalImagesPath);
+            System.out.println("Current recruiter.getImg(): " + recruiter.getImg());
+            System.out.println("=== END DEBUG ===");
             
             // Validate path length before saving to database
             if (finalImagesPath != null && finalImagesPath.length() > 500) {
@@ -227,10 +287,17 @@ public class CompanyInfoServlet extends HttpServlet {
             );
             
             if (success) {
-                // Update session with new data
+                // Update session with new data - cập nhật cả hai keys để đảm bảo tất cả trang đều thấy dữ liệu mới
                 Recruiter updatedRecruiter = recruiterDAO.getRecruiterById(recruiter.getRecruiterID());
                 if (updatedRecruiter != null) {
+                    // Debug: Log session update
+                    System.out.println("=== DEBUG: Updating session ===");
+                    System.out.println("Updated recruiter.getImg(): " + updatedRecruiter.getImg());
+                    System.out.println("Updated recruiter.getCompanyLogoURL(): " + updatedRecruiter.getCompanyLogoURL());
+                    System.out.println("=== END DEBUG ===");
+                    
                     session.setAttribute("user", updatedRecruiter);
+                    session.setAttribute("recruiter", updatedRecruiter); // Cập nhật cả key "recruiter" để job-posting.jsp có thể đọc được
                 }
                 
                 response.sendRedirect(request.getContextPath() + "/CompanyInfoServlet?success=updated");
